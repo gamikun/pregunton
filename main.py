@@ -70,6 +70,11 @@ class are:
 	def __init__(self, pattern):
 		self.re = re.compile(pattern)
 
+class stwith(object):
+	__slots__ = ['variants']
+	def __init__(self, variants=[]):
+		self.variants = variants
+
 def reco(pattern):
 	return are(pattern)
 
@@ -209,6 +214,19 @@ def weather_today(m):
 	else:
 		return "no estoy seguro"
 
+def como_matar(w):
+	if w.startswith("el gusano"):
+		return "el gusano%s" % (" se mata así" * 3)
+	return "solo golpéalo hasta morir"
+
+def como(w):
+	if w.startswith("matar "):
+		return como_matar(w[6:])
+	if w.startswith("se mata "):
+		return como_matar(w[8:])
+		
+	return "cómo qué?"
+
 questions = [
 	(1, set(['hola', 'oli', 'oli', 'holi']),
 		['hola', 'hola que tal?', 'keubole', 'qué pasa?']),
@@ -295,7 +313,11 @@ questions = [
 	(None, reco(r'^[ck]uando\s+(?:es)\s+([^\?]+)\?*'), when_is_holiday),
 
 	# CLIMA
-	(0, reco(r'^[ck]omo\s+(?:anda|esta)\s+el\s+clima(?:\s+hoy)?\?*'), weather_today),
+	(0, reco(r'^(?:[ck]omo|(?:que|ke?)\s+tal)\s+(?:anda|esta)\s+el\s+clima(?:\s+hoy)?\?*'), weather_today),
+	(0, reco(r'^a\s+[ck]ua[nt]{1,2}o(?:s?\s+grados)?\s+e?sta?mo?s\?*'), weather_today),
+
+	# COMO (primero experimental de arbol completo),
+	(0, stwith(variants=['komo ', 'como ']), como),
 
 ]
 
@@ -309,6 +331,13 @@ def normalize_text(text):
 
 def random_element(array):
 	return array[random.randint(0, len(array) - 1)]
+
+"""def handle_answer(answer, question=None):
+	if isinstance(answer, str):
+		return str
+	if hasattr(answer, '__call__'):
+		return """
+
 
 while 1:
 	answer = None
@@ -337,6 +366,13 @@ while 1:
 				else:
 					answer = random_element(answer)
 				break
+		if isinstance(question, stwith):
+			for word in question.variants:
+				if q.startswith(word):
+					if hasattr(answer, '__call__'):
+						answer = answer(q[len(word):])
+					break
+
 	if answer is None:
 		answer = "que?"
 	print("ella: %s" % answer)
