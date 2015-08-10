@@ -16,6 +16,13 @@ dupli_answer = [
 	'ya dijiste eso',
 ]
 
+months = [
+	'no', 'enero', 'febrero', 'marzo',
+	'abril', 'mayo', 'junio', 'julio',
+	'agosto', 'septiembre', 'octubre',
+	'noviembre', 'diciebre',
+]
+
 programming_languages = [
 	'C#', 'Visual Basic', 'Python',
 	'Scala', 'Java', 'Objective-C',
@@ -38,9 +45,21 @@ month_names = {
 	'octubre': 10, 'noviembre': 11, 'diciembre': 12,
 }
 
+who_is_index = {
+	'harry potter': 'un mago',
+}
+
 hashers = {
 	'md5': lambda x: hashlib.md5(x).hexdigest(),
 	'sha1': lambda x: hashlib.sha1(x).hexdigest(),
+}
+
+predefined_dates = {
+	'cumple bill gates': dt(year=1955, month=10, day=28),
+	'cumple steve jobs': dt(year=1955, month=2,  day=24),
+	'cumple gamaliel': dt(year=1988, month=2, day=12),
+	'navidad': dt(year=2000, month=12, day=25),
+	'ano nuevo': dt(year=2000, month=1, day=1),
 }
 
 asked = []
@@ -61,6 +80,8 @@ def time_left(m):
 		return dt(year=now.year, month=12, day=24) - now
 	if name.startswith('ano nuevo'):
 		return dt(year=now.year + 1, month=1, day=1)
+	if name.startswith('el fin del mundo'):
+		return "Nadie lo sabe"
 	mm = re.match('el\\s(\d{1,2})\\sde\\s(enero|febrero|marzo|abril|mayo|junio|julio'
 		        + '|agosto|septiembre|octubre|noviembre|diciembre)', name)
 	if not mm is None:
@@ -81,6 +102,8 @@ def who_is(m):
 	key = 'quien es %s' % who
 	if key in learnt_data:
 		return learnt_data[key]
+	if who in who_is_index:
+		return who_is_index[who]
 	name = raw_input('no lo sé, quién es? ').strip()
 	if name != '':
 		if name.startswith('mi '):
@@ -130,7 +153,6 @@ def bye(m):
 	time.sleep(1)
 	sys.exit(0)
 
-
 def dollar(m):
 	import requests
 
@@ -151,6 +173,42 @@ def dollar(m):
 
 	return "no lo sé"
 
+def when(m):
+	phrase = m.group(1)
+	if prhase.startswith('es '):
+		return when_is(word[3:])
+	return "cuando qué?"
+
+def when_is_birthday(m):
+	person = m.group(1)
+	key = 'cumple %s' % person
+	date = predefined_dates.get(key, None)
+	if not date is None:
+		return date
+	if key in learnt_data:
+		return learnt_data[key]
+	return "no sé el cumpleaños de %s" % person
+
+def when_is_holiday(m):
+	holiday = m.group(1)
+	if holiday in predefined_dates:
+		hday = predefined_dates[holiday]
+		return "el %d de %s" \
+			 % (hday.day, months[hday.month])
+	return "no sé cuando es %s" % holiday
+
+def weather_today(m):
+	import requests
+	url = "http://api.openweathermap.org/data/2.5/forecast/daily?q=Hermosillo&mode=json&units=metric&cnt=1"
+	response = requests.get(url)
+	if response.status_code == 200:
+		import json
+		obj = json.loads(response.content)
+		temp = obj.get('list')[0].get('temp').get('day')
+		return "está a %.1f ºC" % float(temp)
+	else:
+		return "no estoy seguro"
+
 questions = [
 	(1, set(['hola', 'oli', 'oli', 'holi']),
 		['hola', 'hola que tal?', 'keubole', 'qué pasa?']),
@@ -164,6 +222,7 @@ questions = [
 	(9, 'cuantos años tienes?', 'vamos'),
 	(10, 'que anime te gusta?', 'naruto'),
 	(11, 'cual es tu color favorito?', 'verde'),
+	(12, reco(r'dime (una?)'), 'no sé'),
 	(12, 'dime un trabalenguas', 'me da weba'),
 	(13, 'comete un trusco', 'esa frase es de mi madre, jaja'),
 	(14, 'cual es tu facebook?', 'http://facebook.com/soygama, agrégame'),
@@ -207,7 +266,7 @@ questions = [
 	(47, reco('(((?:me (?:das|dices))|dame) la h?ora|(ke?|que) h?ora (?:es|seran?))\\??'),
 		 lambda x: dt.now().strftime('%H:%S')),
 	(48, 'no mames', 'no mamo, tú sí?'),
-	(49, reco('(?:ke?|qu?e?) (?:opinas|piensas) de (((las?|el|los?)\\s)?([^\?]+))\\?*'),
+	(49, reco('(?:ke?|qu?e?) (?:opinas|piensas|me dices) de (((las?|el|los?)\\s)?([^\?]+))\\?*'),
 		 lambda x: 'no tengo nada qué decir de %s' % x.group(1)
 		),
 	(50, reco('(?:[kc]uanto|(?:que|ke?) tanto) falta para ([^\\?]+)\\?*'), time_left),
@@ -219,11 +278,25 @@ questions = [
 	(55, 'hermosillo', ['carne asada?', 'machaca?', 'coyotas', 'chimichangas?']),
 	(56, reco(r'(?:da|di)me el (md5|sha1) de (.+)'),
 		lambda x: hashers[x.group(1)](x.group(2))),
-	(56, reco(r'[ck]uanto cuesta (una?|las?|los?) ([^\?]+)\?*'), asked_price),
-	(57, reco(r'(?:qu|ke?) (?:se?ra bu?e?no|podria|pu?e?do) e?studiar\?*'), what2study),
+	(56, reco(r'[ck]uanto [ck]uestan? (una?|las?|los?) ([^\?]+)\?*'), asked_price),
+	(57, reco(r'(?:qu|ke?) (?:se?ri?a bu?e?no|podria|pu?e?do) e?studiar\?*'), what2study),
 	(58, reco(r'existe el dominio (\w+(?:\.\w+)+)\?*'), resolve_host),
 	(59, reco(r'(adios|bye|al rato|ya me voy)'), bye),
-	(60, reco(r'(?:en )?cua[nt]{2}o e?sta el doll?ar?'), dollar),
+
+	# Valor del dólar
+	(60, reco(r'(?:en\s)?[ck]ua[nt]{2}o\se?sta\sel\sdoll?ar?\?*'), dollar),
+	(61, reco(r'(esto es|es esto) una pregunta\?'), 'sí'),
+
+	# CUANDO CUMPLE AÑOS / CUANDO ES EL CUMPLEAÑOS
+	(None, reco(r'^[ck]uando\s+(?:es\s+el\s+[ck]u?mple(?:anos)?\s+de|[ck]umple\s+anos)\s+([^\?]+)\?*'),
+		when_is_birthday
+		),
+	# CUANDO ES X día del año
+	(None, reco(r'^[ck]uando\s+(?:es)\s+([^\?]+)\?*'), when_is_holiday),
+
+	# CLIMA
+	(0, reco(r'^[ck]omo\s+(?:anda|esta)\s+el\s+clima(?:\s+hoy)?\?*'), weather_today),
+
 ]
 
 def normalize_text(text):
