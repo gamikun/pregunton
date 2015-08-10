@@ -5,6 +5,8 @@ from datetime import timedelta
 import math
 import random
 import hashlib
+import time
+import sys
 
 
 dupli_answer = [
@@ -98,8 +100,56 @@ def fill_name(m):
 	learnt_data[key] = name
 	return "mucho gusto %s" % name
 
+def asked_price(m):
+	prefix = m.group(1)
+	subject = m.group(2)
+
+	if subject == 'iphone':
+		return "Como 10 mil pesos los iPhone 6"
+	else:
+		return "No sé, tal vez cueste mucho dinero %s %s"\
+			 % (prefix, subject,)
+
 def tell_programming_language(m=None):
 	return 
+
+def what2study(m):
+	from quizes import questudiar
+	return questudiar.start_quiz()
+
+def resolve_host(m):
+	import socket
+	try:
+		socket.gethostbyname(m.group(1))
+		return "sí"
+	except:
+		return "no"
+
+def bye(m):
+	print("hasta luego")
+	time.sleep(1)
+	sys.exit(0)
+
+
+def dollar(m):
+	import requests
+
+	if not 'precio dolar' in learnt_data:
+		print("déjame calcularlo...")
+		response = requests.get(
+			"http://download.finance.yahoo.com/d/quotes.csv?s=USDMXN=X&f=l1&e=.cs"
+		)
+		precio = float(response.content)\
+				if response.status_code == 200\
+				else None
+		learnt_data['precio dolar'] = precio
+	else:
+		precio = learnt_data['precio dolar']
+
+	if not precio is None:
+		return "en $%2.f pesos" % precio
+
+	return "no lo sé"
 
 questions = [
 	(1, set(['hola', 'oli', 'oli', 'holi']),
@@ -167,17 +217,22 @@ questions = [
 	(54, reco('(?:de )?(?:(?:que|ke?) color )(?:es|son )([^\\?]+)\\?*'),
 		 lambda x: colors[x.group(1)] if x.group(1) in colors else 'no lo sé'),
 	(55, 'hermosillo', ['carne asada?', 'machaca?', 'coyotas', 'chimichangas?']),
-	(56, reco('(?:da|di)me el (md5|sha1) de (.+)'),
+	(56, reco(r'(?:da|di)me el (md5|sha1) de (.+)'),
 		lambda x: hashers[x.group(1)](x.group(2))),
-	(57, reco('cuanto espacio me queda en disco\?'), 
+	(56, reco(r'[ck]uanto cuesta (una?|las?|los?) ([^\?]+)\?*'), asked_price),
+	(57, reco(r'(?:qu|ke?) (?:se?ra bu?e?no|podria|pu?e?do) e?studiar\?*'), what2study),
+	(58, reco(r'existe el dominio (\w+(?:\.\w+)+)\?*'), resolve_host),
+	(59, reco(r'(adios|bye|al rato|ya me voy)'), bye),
+	(60, reco(r'(?:en )?cua[nt]{2}o e?sta el doll?ar?'), dollar),
 ]
 
 def normalize_text(text):
+	if text is None: return ""
 	return text.strip().lower()\
 		 .replace("á", "a").replace("é", "e")\
 		 .replace("í", "i").replace("ó", "o")\
 		 .replace("ú", "u").replace("ü", "u")\
-		 .replace('ñ', "n")
+		 .replace('ñ', "n")\
 
 def random_element(array):
 	return array[random.randint(0, len(array) - 1)]
