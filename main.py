@@ -230,58 +230,58 @@ def como(w):
 questions = [
 	(1, set(['hola', 'oli', 'oli', 'holi']),
 		['hola', 'hola que tal?', 'keubole', 'qué pasa?']),
-	(2, 'hey', 'que onda?'),
+	(2, u'hey', 'que onda?'),
 	(3, reco('(cual es tu nombre|(como )?te llamas)\\?'), lambda: 'gamaliel'),
-	(4, 'estoy aburrido', 'qué quieres hacer?'),
-	(5, 'vamos al cine', 'vamos'),
-	(6, 'hello world', 'en qué lenguaje de programación?'),
-	(7, 'que calor', 'donde vives?'),
-	(8, 'te apestan los pies?', 'no, soy una computadora'),
-	(9, 'cuantos años tienes?', 'vamos'),
-	(10, 'que anime te gusta?', 'naruto'),
-	(11, 'cual es tu color favorito?', 'verde'),
+	(4, u'estoy aburrido', 'qué quieres hacer?'),
+	(5, u'vamos al cine', 'vamos'),
+	(6, u'hello world', 'en qué lenguaje de programación?'),
+	(7, u'que calor', 'donde vives?'),
+	(8, u'te apestan los pies?', 'no, soy una computadora'),
+	(9, u'cuantos años tienes?', 'vamos'),
+	(10, u'que anime te gusta?', 'naruto'),
+	(11, u'cual es tu color favorito?', 'verde'),
 	(12, reco(r'dime (una?)'), 'no sé'),
-	(12, 'dime un trabalenguas', 'me da weba'),
-	(13, 'comete un trusco', 'esa frase es de mi madre, jaja'),
-	(14, 'cual es tu facebook?', 'http://facebook.com/soygama, agrégame'),
-	(15, 'tu pelicula favorita?', 'la era del hielo 2'),
-	(16, 'que haces?', 'tirando barra, machín'),
-	(17, 'chilenos', 'la wea fome qliao'),
-	(18, 'argentina', 'no me rompás la pelota boludo'),
-	(19, 'pitorrito', 'así que conoces al baitan'),
-	(20, 'me ando meando', 'córrele al baño'),
-	(21, 'el cielo es azul', 'y los árboles son verdes'),
-	(22, 'weon qliao', 'ah eres chileno?'),
-	(23, 'preguntame algo', 'tienes carro?'),
-	(24, 'que desayunaste?', 'huevo, qué más?'),
-	(25, 'tengo sueño', 'y por qué no duermes?'),
-	(26, 'quiero dinero', 'vende aguacates'),
-	(27, 'dame dinero', 'por qué lo haría?'),
-	(28, 'ando viendo la novela', 'cuál?'),
-	(29, 'tienes carro?', 'sí, un chevy 99 color plata'),
-	(30, 'hay que tomar', 'cerveza, vino o vodka?'),
-	(31, 'mexico', 
-		['tacos?', 'charros?', 'fútbol', 'matraca?',
+	(12, u'dime un trabalenguas', 'me da weba'),
+	(13, u'comete un trusco', 'esa frase es de mi madre, jaja'),
+	(14, u'cual es tu facebook?', 'http://facebook.com/soygama, agrégame'),
+	(15, u'tu pelicula favorita?', 'la era del hielo 2'),
+	(16, u'que haces?', 'tirando barra, machín'),
+	(17, u'chilenos', 'la wea fome qliao'),
+	(18, u'argentina', 'no me rompás la pelota boludo'),
+	(19, u'pitorrito', 'así que conoces al baitan'),
+	(20, u'me ando meando', 'córrele al baño'),
+	(21, u'el cielo es azul', 'y los árboles son verdes'),
+	(22, u'weon qliao', 'ah eres chileno?'),
+	(23, u'preguntame algo', 'tienes carro?'),
+	(24, u'que desayunaste?', 'huevo, qué más?'),
+	(25, u'tengo sueño', 'y por qué no duermes?'),
+	(26, u'quiero dinero', 'vende aguacates'),
+	(27, u'dame dinero', 'por qué lo haría?'),
+	(28, u'ando viendo la novela', 'cuál?'),
+	(29, u'tienes carro?', 'sí, un chevy 99 color plata'),
+	(30, u'hay que tomar', 'cerveza, vino o vodka?'),
+	(31, u'mexico', 
+		('tacos?', 'charros?', 'fútbol', 'matraca?',
 		 'guacamole?', 'presidente enrique?', 'salsa?',
 		 'burritos?', 'quesadillas?', 'garnachas?',
-		 'corrupción?',]
+		 'corrupción?',)
 		),
-	(32, 'me duele', 'qué te duele?'),
-	(33, 'steve jobs', 'lo dices porque te gusta apple o lo odias?'),
-	(34, 'bill gates', 'te gusta microsoft o puro pedo?'),
-	(35, 'echame una manita', 'de la buena o de la mala?'),
-	(36, 'vamos a comer', 'qué quieres comer?'),
-	(37, 'python', 'este programa está hecho en ese lenguaje'),
-	(38, 'alma garcía', 'tepetlanco? la morra emo de edesarrollos?'),
-	(39, 'dónde vives?', 'en Hermosillo'),
-	(40, 'eres mexicano?', 'asina es'),
-	(41, 'apestoso', 'no tanto como tus patas'),
-	(42, 'payaso', 'en verdad soy un payaso, pero qué le voy a hacer?'),
-	(43, 'drogas', 'marihuana?'),
-	(44, 'noticias', 'normalmente hay puras malas noticias'),
-	(45, 'facebook', 'estás conectado?'),
-	(46, 'a la monda', 'así se llama un grupo coahuila'),
-	(47, reco('(((?:me (?:das|dices))|dame) la h?ora|(ke?|que) h?ora (?:es|seran?))\\??'),
+	(32, u'me duele', 'qué te duele?'),
+	(33, u'steve jobs', 'lo dices porque te gusta apple o lo odias?'),
+	(34, u'bill gates', 'te gusta microsoft o puro pedo?'),
+	(35, u'echame una manita', 'de la buena o de la mala?'),
+	(36, u'vamos a comer', 'qué quieres comer?'),
+	(37, u'python', 'este programa está hecho en ese lenguaje'),
+	(38, u'alma garcía', 'tepetlanco? la morra emo de edesarrollos?'),
+	(39, u'dónde vives?', 'en Hermosillo'),
+	(40, u'eres mexicano?', 'asina es'),
+	(41, u'apestoso', 'no tanto como tus patas'),
+	(42, u'payaso', 'en verdad soy un payaso, pero qué le voy a hacer?'),
+	(43, u'drogas', 'marihuana?'),
+	(44, u'noticias', 'normalmente hay puras malas noticias'),
+	(45, u'facebook', 'estás conectado?'),
+	(46, u'a la monda', 'así se llama un grupo coahuila'),
+	(47, reco('(((?:me (?:das|dices))|dame) la h?ora|(ke?|que) h?ora (?:es|seran?|traes?))\\??'),
 		 lambda x: dt.now().strftime('%H:%S')),
 	(48, 'no mames', 'no mamo, tú sí?'),
 	(49, reco('(?:ke?|qu?e?) (?:opinas|piensas|me dices) de (((las?|el|los?)\\s)?([^\?]+))\\?*'),
@@ -293,7 +293,7 @@ questions = [
 	(53, reco('(?:mi nombre es|me llamo|llamame) (.+)'), fill_name),
 	(54, reco('(?:de )?(?:(?:que|ke?) color )(?:es|son )([^\\?]+)\\?*'),
 		 lambda x: colors[x.group(1)] if x.group(1) in colors else 'no lo sé'),
-	(55, 'hermosillo', ['carne asada?', 'machaca?', 'coyotas', 'chimichangas?']),
+	(55, u'hermosillo', ['carne asada?', 'machaca?', 'coyotas', 'chimichangas?']),
 	(56, reco(r'(?:da|di)me el (md5|sha1) de (.+)'),
 		lambda x: hashers[x.group(1)](x.group(2))),
 	(56, reco(r'[ck]uanto [ck]uestan? (una?|las?|los?) ([^\?]+)\?*'), asked_price),
@@ -321,6 +321,8 @@ questions = [
 
 ]
 
+question_counter = [x for x in range(len(questions))]
+
 def normalize_text(text):
 	if text is None: return ""
 	return text.strip().lower()\
@@ -339,41 +341,42 @@ def random_element(array):
 		return """
 
 
-while 1:
-	answer = None
-	q = normalize_text(raw_input("yo: "))
-	for qs in questions:
-		qid, question, answer = qs
-		if isinstance(question, set):
-			if q in question:
-				if isinstance(question, str):
-					answer = answer
-				else:
-					answer = random_element(answer)
-				break
-		if isinstance(question, are):
-			m = question.re.match(q)
-			if not m is None:
-				if isinstance(answer, str):
-					answer = answer
-				else:
-					answer = answer(m)
-				break
-		if isinstance(question, str):
-			if question == q:
-				if isinstance(answer, str):
-					answer = answer
-				else:
-					answer = random_element(answer)
-				break
-		if isinstance(question, stwith):
-			for word in question.variants:
-				if q.startswith(word):
-					if hasattr(answer, '__call__'):
-						answer = answer(q[len(word):])
+if __name__ == '__main__':
+	while 1:
+		answer = None
+		q = normalize_text(raw_input("yo: "))
+		for qs in questions:
+			qid, question, answer = qs
+			if isinstance(question, set):
+				if q in question:
+					if isinstance(question, str):
+						answer = answer
+					else:
+						answer = random_element(answer)
 					break
+			if isinstance(question, are):
+				m = question.re.match(q)
+				if not m is None:
+					if isinstance(answer, str):
+						answer = answer
+					else:
+						answer = answer(m)
+					break
+			if isinstance(question, str):
+				if question == q:
+					if isinstance(answer, str):
+						answer = answer
+					else:
+						answer = random_element(answer)
+					break
+			if isinstance(question, stwith):
+				for word in question.variants:
+					if q.startswith(word):
+						if hasattr(answer, '__call__'):
+							answer = answer(q[len(word):])
+						break
 
-	if answer is None:
-		answer = "que?"
-	print("ella: %s" % answer)
-	
+		if answer is None:
+			answer = "que?"
+		print("ella: %s" % answer)
+		
